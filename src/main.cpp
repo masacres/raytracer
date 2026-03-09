@@ -6,6 +6,7 @@
 #include "materials/lambertian.h"
 #include "materials/metal.h"
 #include "textures/checker.h"
+#include "acceleration/bvh.h"
 #include "renderer/renderer.h"
 #include <memory>
 
@@ -79,7 +80,7 @@ int main() {
     renderer.samples_per_pixel = 50;
     renderer.max_depth         = 50;
 
-    Image image = renderer.render(cam, world, image_width, image_height);
+    Image image = renderer.render(cam, BVHNode(world), image_width, image_height);
     image.save_ppm("output/render.ppm", renderer.samples_per_pixel);
 
     return 0;
