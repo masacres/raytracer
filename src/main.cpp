@@ -34,7 +34,7 @@ static HittableList build_scene() {
         std::make_shared<Metal>(Color(0.7, 0.6, 0.5), 0.0)));
 
     // Random small spheres
-    /*for (int a = -11; a < 11; a++) {
+    for (int a = -11; a < 11; a++) {
         for (int b = -11; b < 11; b++) {
             Point3 center(a + 0.9 * random_double(), 0.2, b + 0.9 * random_double());
             if ((center - Point3(4, 0.2, 0)).length() <= 0.9) continue;
@@ -51,14 +51,14 @@ static HittableList build_scene() {
                     std::make_shared<Dielectric>(1.5)));
             }
         }
-    }*/
+    }
     return world;
 }
 
 int main() {
     // Image
     constexpr double aspect_ratio = 16.0 / 9.0;
-    constexpr int    image_width  = 400;
+    constexpr int    image_width  = 800;
     constexpr int    image_height = static_cast<int>(image_width / aspect_ratio);
 
     // Camera
@@ -78,7 +78,11 @@ int main() {
     // Render
     Renderer renderer;
     renderer.samples_per_pixel = 4;
-    renderer.max_depth         = 50;
+    renderer.max_depth         = 10;
+    renderer.light_dir         = unit_vector(Vec3(-1.0, -2.0, -1.0));
+    renderer.light_color       = Color(0.9, 0.9, 0.9);
+    renderer.ambient           = Color(0.05, 0.05, 0.05);
+    renderer.sky_color         = Color(0.5, 0.5, 0.8);
 
     Image image = renderer.render(cam, BVHNode(world), image_width, image_height);
     image.save_ppm("output/render.ppm", renderer.samples_per_pixel);
