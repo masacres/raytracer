@@ -1,3 +1,0 @@
-C:/Code/raytracer/build/CMakeFiles/raytracer.dir
-C:/Code/raytracer/build/CMakeFiles/edit_cache.dir
-C:/Code/raytracer/build/CMakeFiles/rebuild_cache.dir
