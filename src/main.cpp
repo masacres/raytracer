@@ -26,7 +26,7 @@ static HittableList build_scene() {
         std::make_shared<Dielectric>(1.5)));
 
     world.add(std::make_shared<Sphere>(
-        Point3(-4, 1, 0), 1.0,
+        Point3(-4, 1, 2), 1.0,
         std::make_shared<Lambertian>(Color(0.4, 0.2, 0.1))));
 
     world.add(std::make_shared<Sphere>(
@@ -34,7 +34,7 @@ static HittableList build_scene() {
         std::make_shared<Metal>(Color(0.7, 0.6, 0.5), 0.0)));
 
     // Random small spheres
-    for (int a = -11; a < 11; a++) {
+    /*for (int a = -11; a < 11; a++) {
         for (int b = -11; b < 11; b++) {
             Point3 center(a + 0.9 * random_double(), 0.2, b + 0.9 * random_double());
             if ((center - Point3(4, 0.2, 0)).length() <= 0.9) continue;
@@ -51,7 +51,7 @@ static HittableList build_scene() {
                     std::make_shared<Dielectric>(1.5)));
             }
         }
-    }
+    }*/
     return world;
 }
 
@@ -77,7 +77,7 @@ int main() {
 
     // Render
     Renderer renderer;
-    renderer.samples_per_pixel = 50;
+    renderer.samples_per_pixel = 4;
     renderer.max_depth         = 50;
 
     Image image = renderer.render(cam, BVHNode(world), image_width, image_height);

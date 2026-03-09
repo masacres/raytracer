@@ -17,7 +17,7 @@ bool Dielectric::scatter(const Ray& r_in, const HitRecord& rec,
     double cos_theta = std::fmin(dot(-unit_dir, rec.normal), 1.0);
     double sin_theta = std::sqrt(1.0 - cos_theta * cos_theta);
 
-    Vec3 dir = (ratio * sin_theta > 1.0 || reflectance(cos_theta, ratio) > random_double())
+    Vec3 dir = (ratio * sin_theta > 1.0 || reflectance(cos_theta, ratio) > 0.5)
                ? reflect(unit_dir, rec.normal)
                : refract(unit_dir, rec.normal, ratio);
 
