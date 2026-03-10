@@ -7,7 +7,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 file(GLOB_RECURSE SOURCES "src/*.cpp")
 
 add_executable(raytracer ${SOURCES})
-target_include_directories(raytracer PRIVATE src)
+target_include_directories(raytracer PRIVATE src third_party)
 
 if(MSVC)
     target_compile_options(raytracer PRIVATE /O2 /W4)
