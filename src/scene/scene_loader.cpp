@@ -42,7 +42,8 @@ static std::shared_ptr<Material> parse_material(const json& j) {
         double spec     = j.value("specular",     0.0);
         double spec_pow = j.value("specular_pow", 32.0);
         double refl     = j.value("reflection",   0.0);
-        return std::make_shared<OpaqueMaterial>(tex, spec, spec_pow, refl);
+        double trans    = j.value("transparency", 0.0);
+        return std::make_shared<OpaqueMaterial>(tex, spec, spec_pow, refl, trans);
     }
     throw std::runtime_error("Unknown material type: " + type);
 }

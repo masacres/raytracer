@@ -6,7 +6,7 @@ A C++17 raytracer built from scratch, featuring a Phong direct-lighting model, p
 
 ## Features
 
-- **Materials** — `OpaqueMaterial` with albedo, specular coefficient, shininess exponent, and mirror reflection
+- **Materials** — `OpaqueMaterial` with albedo, specular coefficient, shininess exponent, mirror reflection, and transparency (combinable simultaneously)
 - **Lighting** — Directional light with ambient, diffuse (Lambertian), and specular (Phong) terms; hard shadows
 - **Textures** — Solid color, Checker
 - **Acceleration** — Bounding Volume Hierarchy (BVH)
@@ -104,21 +104,24 @@ All scene data lives in `scenes/default.json`. Edit it and re-run — no recompi
     "focus_dist": 10.0
   },
   "materials": {
-    "my_mat": {
-      "type": "opaque",
-      "albedo": [0.8, 0.2, 0.2],
-      "specular": 0.5,
-      "specular_pow": 32.0,
-      "reflection": 0.0
-    },
-    "checker_mat": {
+    "ground": {
       "type": "opaque",
       "texture": { "type": "checker", "color1": [0.2, 0.3, 0.1], "color2": [0.9, 0.9, 0.9], "frequency": 5 },
-      "specular": 0.4
+      "specular": 0.4,
+      "specular_pow": 32.0
+    },
+    "red_shiny": {
+      "type": "opaque",
+      "albedo": [0.6, 0.3, 0.2],
+      "specular": 0.9,
+      "specular_pow": 8.0,
+      "reflection": 0.2,
+      "transparency": 0.5
     }
   },
   "objects": [
-    { "type": "sphere", "center": [0, 0.5, -2], "radius": 0.5, "material": "my_mat" }
+    { "type": "sphere", "center": [0, -1000, 0], "radius": 1000.0, "material": "ground" },
+    { "type": "sphere", "center": [4, 1, 0],     "radius": 1.0,    "material": "red_shiny" }
   ],
   "random_spheres": {
     "enabled": true,
@@ -138,6 +141,7 @@ All scene data lives in `scenes/default.json`. Edit it and re-run — no recompi
 | `specular` | `0.0` | Specular highlight intensity in [0, 1] |
 | `specular_pow` | `32.0` | Phong shininess exponent (higher = tighter highlight) |
 | `reflection` | `0.0` | Mirror reflection weight in [0, 1] |
+| `transparency` | `0.0` | Transmission weight in [0, 1]; combinable with `reflection` |
 
 ### Texture types
 

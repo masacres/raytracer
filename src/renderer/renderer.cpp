@@ -13,10 +13,13 @@ Color Renderer::ray_color(const Ray& r, const Hittable& world, int depth) const 
 
     Ray   scattered;
     Color attenuation;
-    bool bounce = rec.mat->scatter(r, rec, attenuation, scattered);
+    rec.mat->scatter(r, rec, attenuation, scattered);  // sets attenuation only
 
-    // Ambient
-    Color result = ambient * attenuation;
+    double trans = rec.mat->get_transparency();
+    double refl  = rec.mat->get_reflection();
+
+    // Ambient — attenuated by opacity
+    Color result = (1.0 - trans) * ambient * attenuation;
 
     // Shadow ray toward directional light
     Vec3 to_light = -light_dir;
@@ -24,20 +27,27 @@ Color Renderer::ray_color(const Ray& r, const Hittable& world, int depth) const 
     HitRecord shadow_rec;
     if (!world.hit(shadow_ray, 0.001, infinity, shadow_rec)) {
         double ndotl = std::max(dot(rec.normal, to_light), 0.0);
-        result += light_color * attenuation * ndotl;
+        result += (1.0 - trans) * light_color * attenuation * ndotl;
 
         double spec = rec.mat->get_specular();
         if (spec > 0.0) {
             Vec3 reflect_dir = reflect(light_dir, rec.normal);
             Vec3 view_dir    = -unit_vector(r.direction());
             double rv        = std::max(dot(reflect_dir, view_dir), 0.0);
-            result += spec * light_color * std::pow(rv, rec.mat->get_specular_pow());
+            result += (1.0 - trans) * spec * light_color * std::pow(rv, rec.mat->get_specular_pow());
         }
     }
 
-    // Indirect / reflective bounce
-    if (bounce) {
-        result += rec.mat->get_reflection() * attenuation * ray_color(scattered, world, depth - 1);
+    // Transmitted bounce
+    if (trans > 0.0) {
+        Ray transmitted(rec.p, r.direction());
+        result += trans * attenuation * ray_color(transmitted, world, depth - 1);
+    }
+
+    // Reflected bounce
+    if (refl > 0.0) {
+        Vec3 ref_dir = reflect(unit_vector(r.direction()), rec.normal);
+        result += refl * attenuation * ray_color(Ray(rec.p, ref_dir), world, depth - 1);
     }
 
     return result;
