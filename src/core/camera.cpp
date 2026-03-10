@@ -20,12 +20,6 @@ Camera::Camera(Point3 lookfrom, Point3 lookat, Vec3 vup,
 }
 
 Ray Camera::get_ray(double s, double t) const {
-//    Vec3 rd     = lens_radius * random_in_unit_disk();
-//    Vec3 offset = u * rd.x() + v * rd.y();
-//    return Ray(
-//        origin + offset,
-//        lower_left_corner + s*horizontal + t*vertical - origin - offset
-//    );
     return Ray(
         origin,
         lower_left_corner + s*horizontal + t*vertical - origin

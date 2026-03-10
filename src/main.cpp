@@ -2,9 +2,7 @@
 #include "core/utils.h"
 #include "geometry/hittable_list.h"
 #include "geometry/sphere.h"
-#include "materials/dielectric.h"
-#include "materials/lambertian.h"
-#include "materials/metal.h"
+#include "materials/opaque_material.h"
 #include "textures/checker.h"
 #include "acceleration/bvh.h"
 #include "renderer/renderer.h"
@@ -18,20 +16,20 @@ static HittableList build_scene() {
         Color(0.2, 0.3, 0.1), Color(0.9, 0.9, 0.9));
     world.add(std::make_shared<Sphere>(
         Point3(0, -1000, 0), 1000.0,
-        std::make_shared<Lambertian>(ground_tex)));
+        std::make_shared<OpaqueMaterial>(ground_tex)));
 
     // Three hero spheres
     world.add(std::make_shared<Sphere>(
         Point3(0, 1, 0), 1.0,
-        std::make_shared<Dielectric>(1.5)));
+        std::make_shared<OpaqueMaterial>(Color(0.5, 0.6, 0.6))));
 
     world.add(std::make_shared<Sphere>(
         Point3(-4, 1, 2), 1.0,
-        std::make_shared<Lambertian>(Color(0.4, 0.2, 0.1))));
+        std::make_shared<OpaqueMaterial>(Color(0.4, 0.2, 0.1))));
 
     world.add(std::make_shared<Sphere>(
         Point3(4, 1, 0), 1.0,
-        std::make_shared<Metal>(Color(0.7, 0.6, 0.5), 0.0)));
+        std::make_shared<OpaqueMaterial>(Color(0.7, 0.6, 0.5))));
 
     // Random small spheres
     for (int a = -11; a < 11; a++) {
@@ -42,13 +40,10 @@ static HittableList build_scene() {
             double mat_roll = random_double();
             if (mat_roll < 0.8) {
                 world.add(std::make_shared<Sphere>(center, 0.2,
-                    std::make_shared<Lambertian>(Color::random() * Color::random())));
-            } else if (mat_roll < 0.95) {
-                world.add(std::make_shared<Sphere>(center, 0.2,
-                    std::make_shared<Metal>(Color::random(0.5, 1), random_double(0, 0.5))));
+                    std::make_shared<OpaqueMaterial>(Color::random() * Color::random())));
             } else {
                 world.add(std::make_shared<Sphere>(center, 0.2,
-                    std::make_shared<Dielectric>(1.5)));
+                    std::make_shared<OpaqueMaterial>(Color::random(0.5, 1))));
             }
         }
     }

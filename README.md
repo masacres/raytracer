@@ -2,7 +2,7 @@
 
 A C++17 path tracer built from scratch, featuring physically-based materials, BVH acceleration, and depth of field.
 
-![Example render](output/render.ppm)
+![Example render](render.png)
 
 ## Features
 
