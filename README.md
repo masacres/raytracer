@@ -1,16 +1,17 @@
 # Raytracer
 
-A C++17 path tracer built from scratch, featuring physically-based materials, BVH acceleration, and depth of field.
+A C++17 raytracer built from scratch, featuring a Phong direct-lighting model, procedural textures, and BVH acceleration.
 
 ![Example render](render.png)
 
 ## Features
 
-- **Materials** — Lambertian (diffuse), Metal (reflective + fuzzy), Dielectric (glass)
+- **Materials** — `OpaqueMaterial` with albedo, specular coefficient, and shininess exponent
+- **Lighting** — Directional light with ambient, diffuse (Lambertian), and specular (Phong) terms; hard shadows
 - **Textures** — Solid color, Checker
 - **Acceleration** — Bounding Volume Hierarchy (BVH)
 - **Camera** — Configurable FOV, look-at, depth of field
-- **Anti-aliasing** — Multi-sample per pixel
+- **Anti-aliasing** — 4-sample fixed grid per pixel
 - **Gamma correction** — γ = 2.0
 - **Output** — PPM image format
 
@@ -33,10 +34,8 @@ raytracer/
 │   │   ├── hittable_list.h/.cpp
 │   │   └── sphere.h/.cpp
 │   ├── materials/
-│   │   ├── material.h       # Abstract Material
-│   │   ├── lambertian.h/.cpp
-│   │   ├── metal.h/.cpp
-│   │   └── dielectric.h/.cpp
+│   │   ├── material.h       # Abstract Material (get_specular, get_specular_pow)
+│   │   └── opaque_material.h/.cpp
 │   ├── textures/
 │   │   ├── texture.h        # Abstract Texture
 │   │   ├── solid_color.h/.cpp
@@ -44,7 +43,7 @@ raytracer/
 │   ├── acceleration/
 │   │   └── bvh.h/.cpp       # BVH tree
 │   └── renderer/
-│       ├── renderer.h/.cpp  # Main render loop
+│       ├── renderer.h/.cpp  # Main render loop + Phong shading
 │       └── image.h/.cpp     # PPM image output
 └── output/                  # Rendered images saved here
 ```
@@ -73,31 +72,44 @@ Edit `src/main.cpp` to adjust:
 
 | Setting | Default | Description |
 |---|---|---|
-| `image_width` | `400` | Output width in pixels |
+| `image_width` | `800` | Output width in pixels |
 | `aspect_ratio` | `16:9` | Aspect ratio |
-| `samples_per_pixel` | `50` | Rays per pixel (higher = less noise) |
-| `max_depth` | `50` | Max ray bounces |
+| `max_depth` | `10` | Max ray bounces |
 | `aperture` | `0.1` | Lens aperture (0 = no blur) |
 | Camera position | `(13,2,3)` | `lookfrom` in `main()` |
+
+Renderer light settings (set on the `Renderer` object in `main()`):
+
+| Field | Default | Description |
+|---|---|---|
+| `light_dir` | `(-1,-2,-1)` normalized | Directional light direction |
+| `light_color` | `(0.9, 0.9, 0.9)` | Light color/intensity |
+| `ambient` | `(0.05, 0.05, 0.05)` | Ambient fill color |
+| `sky_color` | `(0.5, 0.5, 0.8)` | Background/miss color |
 
 ## Adding Objects
 
 ```cpp
-// Diffuse sphere
+// Matte sphere (no specular)
 world.add(std::make_shared<Sphere>(
     Point3(0, 0.5, -2), 0.5,
-    std::make_shared<Lambertian>(Color(0.8, 0.2, 0.2))));
+    std::make_shared<OpaqueMaterial>(Color(0.8, 0.2, 0.2))));
 
-// Mirror sphere
+// Shiny sphere (high specular, tight highlight)
 world.add(std::make_shared<Sphere>(
     Point3(1, 0.5, -2), 0.5,
-    std::make_shared<Metal>(Color(0.8, 0.8, 0.8), 0.0)));
+    std::make_shared<OpaqueMaterial>(Color(0.8, 0.8, 0.8), 0.9, 64.0)));
 
-// Glass sphere
+// Checker-textured sphere
+auto tex = std::make_shared<CheckerTexture>(Color(0.2, 0.3, 0.1), Color(0.9, 0.9, 0.9));
 world.add(std::make_shared<Sphere>(
     Point3(-1, 0.5, -2), 0.5,
-    std::make_shared<Dielectric>(1.5)));
+    std::make_shared<OpaqueMaterial>(tex)));
 ```
+
+`OpaqueMaterial` constructor: `(albedo, specular = 0.0, specular_pow = 32.0)`
+- `specular` — highlight intensity in [0, 1]
+- `specular_pow` — Phong shininess exponent (higher = tighter highlight)
 
 ## References
 
