@@ -25,6 +25,14 @@ Color Renderer::ray_color(const Ray& r, const Hittable& world, int depth) const 
     if (!world.hit(shadow_ray, 0.001, infinity, shadow_rec)) {
         double ndotl = std::max(dot(rec.normal, to_light), 0.0);
         result += light_color * attenuation * ndotl;
+
+        double spec = rec.mat->get_specular();
+        if (spec > 0.0) {
+            Vec3 reflect_dir = reflect(light_dir, rec.normal);
+            Vec3 view_dir    = -unit_vector(r.direction());
+            double rv        = std::max(dot(reflect_dir, view_dir), 0.0);
+            result += spec * light_color * std::pow(rv, rec.mat->get_specular_pow());
+        }
     }
 
     // Indirect / reflective bounce
