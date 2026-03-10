@@ -37,7 +37,7 @@ Color Renderer::ray_color(const Ray& r, const Hittable& world, int depth) const 
 
     // Indirect / reflective bounce
     if (bounce) {
-        result += attenuation * ray_color(scattered, world, depth - 1);
+        result += rec.mat->get_reflection() * attenuation * ray_color(scattered, world, depth - 1);
     }
 
     return result;

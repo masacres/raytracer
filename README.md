@@ -6,7 +6,7 @@ A C++17 raytracer built from scratch, featuring a Phong direct-lighting model, p
 
 ## Features
 
-- **Materials** — `OpaqueMaterial` with albedo, specular coefficient, and shininess exponent
+- **Materials** — `OpaqueMaterial` with albedo, specular coefficient, shininess exponent, and mirror reflection
 - **Lighting** — Directional light with ambient, diffuse (Lambertian), and specular (Phong) terms; hard shadows
 - **Textures** — Solid color, Checker
 - **Acceleration** — Bounding Volume Hierarchy (BVH)
@@ -100,6 +100,11 @@ world.add(std::make_shared<Sphere>(
     Point3(1, 0.5, -2), 0.5,
     std::make_shared<OpaqueMaterial>(Color(0.8, 0.8, 0.8), 0.9, 64.0)));
 
+// Reflective sphere (mirror-like environment reflection)
+world.add(std::make_shared<Sphere>(
+    Point3(0, 0.5, -2), 0.5,
+    std::make_shared<OpaqueMaterial>(Color(0.5, 0.6, 0.6), 0.8, 16.0, 0.7)));
+
 // Checker-textured sphere
 auto tex = std::make_shared<CheckerTexture>(Color(0.2, 0.3, 0.1), Color(0.9, 0.9, 0.9));
 world.add(std::make_shared<Sphere>(
@@ -107,9 +112,10 @@ world.add(std::make_shared<Sphere>(
     std::make_shared<OpaqueMaterial>(tex)));
 ```
 
-`OpaqueMaterial` constructor: `(albedo, specular = 0.0, specular_pow = 32.0)`
+`OpaqueMaterial` constructor: `(albedo, specular = 0.0, specular_pow = 32.0, reflection = 0.0)`
 - `specular` — highlight intensity in [0, 1]
 - `specular_pow` — Phong shininess exponent (higher = tighter highlight)
+- `reflection` — mirror reflection weight in [0, 1] (0 = matte, 1 = perfect mirror)
 
 ## References
 
