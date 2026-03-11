@@ -14,7 +14,7 @@ A C++17 raytracer built from scratch, featuring a Phong direct-lighting model, p
 - **Anti-aliasing** — 4-sample fixed grid per pixel
 - **Gamma correction** — γ = 2.0
 - **Output** — PPM image format
-- **Primitives** — Spheres, planes, finite capped cylinders (arbitrary axis orientation), triangles, and arbitrarily-oriented cuboids
+- **Primitives** — Spheres, planes, finite capped cylinders (arbitrary axis orientation), triangles, arbitrarily-oriented cuboids, and toroids (tori of revolution, quartic ray intersection via Ferrari's method)
 - **JSON scenes** — Scene, camera, materials, and objects defined in a JSON file; no recompile needed to change the scene
 
 ## Project Structure
@@ -43,6 +43,7 @@ raytracer/
 │   │   ├── cylinder.h/.cpp
 │   │   ├── plane.h/.cpp
 │   │   ├── sphere.h/.cpp
+│   │   ├── toroid.h/.cpp
 │   │   └── triangle.h/.cpp
 │   ├── materials/
 │   │   ├── material.h       # Abstract Material (get_specular, get_specular_pow, get_reflection)
@@ -151,6 +152,7 @@ All scene data lives in `scenes/default.json`. Edit it and re-run — no recompi
 | `"cylinder"` | `"center": [x, y, z]`, `"axis": [x, y, z]`, `"radius"`, `"height"`, `"material"` |
 | `"triangle"` | `"p0": [x, y, z]`, `"p1": [x, y, z]`, `"p2": [x, y, z]`, `"material"` |
 | `"cuboid"` | `"center": [x, y, z]`, `"u": [x, y, z]`, `"v": [x, y, z]`, `"width"`, `"height"`, `"depth"`, `"material"` |
+| `"toroid"` | `"center": [x, y, z]`, `"axis": [x, y, z]`, `"radius1"` (major R), `"radius2"` (tube r), `"material"` |
 
 ### Texture types
 
