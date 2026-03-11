@@ -8,13 +8,13 @@ A C++17 raytracer built from scratch, featuring a Phong direct-lighting model, p
 
 - **Materials** — `OpaqueMaterial` with albedo, specular coefficient, shininess exponent, mirror reflection, and transparency (combinable simultaneously)
 - **Lighting** — Directional light with ambient, diffuse (Lambertian), and specular (Phong) terms; hard shadows
-- **Textures** — Solid color, Checker
+- **Textures** — Solid color, Checker (world-space 3D), UV Checker (surface-mapped)
 - **Acceleration** — Bounding Volume Hierarchy (BVH)
 - **Camera** — Configurable FOV, look-at, depth of field
 - **Anti-aliasing** — 4-sample fixed grid per pixel
 - **Gamma correction** — γ = 2.0
 - **Output** — PPM image format
-- **Primitives** — Spheres, planes, and finite capped cylinders (arbitrary axis orientation)
+- **Primitives** — Spheres, planes, finite capped cylinders (arbitrary axis orientation), and triangles
 - **JSON scenes** — Scene, camera, materials, and objects defined in a JSON file; no recompile needed to change the scene
 
 ## Project Structure
@@ -41,14 +41,16 @@ raytracer/
 │   │   ├── hittable_list.h/.cpp
 │   │   ├── cylinder.h/.cpp
 │   │   ├── plane.h/.cpp
-│   │   └── sphere.h/.cpp
+│   │   ├── sphere.h/.cpp
+│   │   └── triangle.h/.cpp
 │   ├── materials/
 │   │   ├── material.h       # Abstract Material (get_specular, get_specular_pow, get_reflection)
 │   │   └── opaque_material.h/.cpp
 │   ├── textures/
 │   │   ├── texture.h        # Abstract Texture
 │   │   ├── solid_color.h/.cpp
-│   │   └── checker.h/.cpp
+│   │   ├── checker.h/.cpp
+│   │   └── uv_checker.h/.cpp
 │   ├── acceleration/
 │   │   └── bvh.h/.cpp       # BVH tree
 │   ├── scene/
@@ -146,13 +148,15 @@ All scene data lives in `scenes/default.json`. Edit it and re-run — no recompi
 | `"sphere"` | `"center": [x, y, z]`, `"radius"`, `"material"` |
 | `"plane"` | `"point": [x, y, z]`, `"normal": [x, y, z]`, `"material"` |
 | `"cylinder"` | `"center": [x, y, z]`, `"axis": [x, y, z]`, `"radius"`, `"height"`, `"material"` |
+| `"triangle"` | `"p0": [x, y, z]`, `"p1": [x, y, z]`, `"p2": [x, y, z]`, `"material"` |
 
 ### Texture types
 
 | Type | Fields |
 |---|---|
 | `"solid"` | `"color": [r, g, b]` |
-| `"checker"` | `"color1"`, `"color2"`, `"frequency"` |
+| `"checker"` | `"color1"`, `"color2"`, `"frequency"` — tiles in world-space XYZ |
+| `"uv_checker"` | `"color1"`, `"color2"`, `"tiles_u"`, `"tiles_v"` — tiles in surface UV space; intended for triangles |
 
 ## Third-Party Licenses
 

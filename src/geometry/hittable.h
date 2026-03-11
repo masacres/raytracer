@@ -11,7 +11,9 @@ struct HitRecord {
     Point3 p;
     Vec3   normal;
     std::shared_ptr<Material> mat;
-    double t        = 0.0;
+    double t          = 0.0;
+    double u          = 0.0;
+    double v          = 0.0;
     bool   front_face = false;
 
     // Sets normal to always point against the incoming ray.

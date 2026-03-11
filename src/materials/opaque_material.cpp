@@ -6,6 +6,6 @@ OpaqueMaterial::OpaqueMaterial(const Color& a, double spec, double spec_pow, dou
 
 bool OpaqueMaterial::scatter(const Ray& /*r_in*/, const HitRecord& rec,
                          Color& attenuation, Ray& /*scattered*/) const {
-    attenuation = albedo->value(0, 0, rec.p);
+    attenuation = albedo->value(rec.u, rec.v, rec.p);
     return false;
 }

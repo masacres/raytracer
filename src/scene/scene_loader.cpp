@@ -3,8 +3,10 @@
 #include "geometry/sphere.h"
 #include "geometry/plane.h"
 #include "geometry/cylinder.h"
+#include "geometry/triangle.h"
 #include "materials/opaque_material.h"
 #include "textures/checker.h"
+#include "textures/uv_checker.h"
 #include "textures/solid_color.h"
 #include "nlohmann/json.hpp"
 #include <fstream>
@@ -28,6 +30,13 @@ static std::shared_ptr<Texture> parse_texture(const json& j) {
         Color c2   = parse_color(j.at("color2"));
         double freq = j.value("frequency", 10.0);
         return std::make_shared<CheckerTexture>(c1, c2, freq);
+    }
+    if (type == "uv_checker") {
+        Color c1      = parse_color(j.at("color1"));
+        Color c2      = parse_color(j.at("color2"));
+        double tiles_u = j.value("tiles_u", 2.0);
+        double tiles_v = j.value("tiles_v", 2.0);
+        return std::make_shared<UVCheckerTexture>(c1, c2, tiles_u, tiles_v);
     }
     throw std::runtime_error("Unknown texture type: " + type);
 }
@@ -123,6 +132,14 @@ SceneConfig load_scene(const std::string& path) {
             if (!materials.count(mat_name))
                 throw std::runtime_error("Unknown material: " + mat_name);
             cfg.world.add(std::make_shared<Cylinder>(cyl_center, cyl_axis, cyl_radius, cyl_height, materials[mat_name]));
+        } else if (type == "triangle") {
+            Point3 tp0 = parse_color(obj.at("p0"));
+            Point3 tp1 = parse_color(obj.at("p1"));
+            Point3 tp2 = parse_color(obj.at("p2"));
+            std::string mat_name = obj.at("material").get<std::string>();
+            if (!materials.count(mat_name))
+                throw std::runtime_error("Unknown material: " + mat_name);
+            cfg.world.add(std::make_shared<Triangle>(tp0, tp1, tp2, materials[mat_name]));
         } else {
             throw std::runtime_error("Unknown object type: " + type);
         }
