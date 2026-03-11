@@ -71,6 +71,8 @@
     { "type": "sphere", "center": [0, 1, 0],     "radius": 1.0,       "material": "metal"      },
     { "type": "sphere", "center": [4, 1, -1],     "radius": 1.0,       "material": "red_shiny" },
     { "type": "cylinder", "center": [6, 0.75, 0.5],  "axis": [0, 1, 0],   "radius": 0.4, "height": 1.5, "material": "ground" },
-    { "type": "triangle", "p0": [5, 0, 3], "p1":  [5, 1, 1], "p2":  [5, 0, 1], "material": "tri_checker" }
+    { "type": "triangle", "p0": [5, 0, 3], "p1":  [5, 1, 1], "p2":  [5, 0, 1], "material": "tri_checker" },
+    { "type": "cuboid", "center": [3, 0.5, 3], "u": [0.5, 0, 0.5], "v": [0, 1, 0], 
+      "width": 1.0, "height": 1.0, "depth": 1.0, "material": "ground" }
   ]
 }

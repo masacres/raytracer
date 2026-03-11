@@ -4,6 +4,7 @@
 #include "geometry/plane.h"
 #include "geometry/cylinder.h"
 #include "geometry/triangle.h"
+#include "geometry/cuboid.h"
 #include "materials/opaque_material.h"
 #include "textures/checker.h"
 #include "textures/uv_checker.h"
@@ -140,6 +141,17 @@ SceneConfig load_scene(const std::string& path) {
             if (!materials.count(mat_name))
                 throw std::runtime_error("Unknown material: " + mat_name);
             cfg.world.add(std::make_shared<Triangle>(tp0, tp1, tp2, materials[mat_name]));
+        } else if (type == "cuboid") {
+            Point3 cub_center = parse_color(obj.at("center"));
+            Vec3   cub_u      = parse_color(obj.at("u"));
+            Vec3   cub_v      = parse_color(obj.at("v"));
+            double cub_w      = obj.at("width").get<double>();
+            double cub_h      = obj.at("height").get<double>();
+            double cub_d      = obj.at("depth").get<double>();
+            std::string mat_name = obj.at("material").get<std::string>();
+            if (!materials.count(mat_name))
+                throw std::runtime_error("Unknown material: " + mat_name);
+            cfg.world.add(std::make_shared<Cuboid>(cub_center, cub_u, cub_v, cub_w, cub_h, cub_d, materials[mat_name]));
         } else {
             throw std::runtime_error("Unknown object type: " + type);
         }
