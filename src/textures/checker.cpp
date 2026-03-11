@@ -7,6 +7,9 @@ CheckerTexture::CheckerTexture(Color c1, Color c2, double freq)
     , odd (std::make_shared<SolidColor>(c2)), frequency(freq) {}
 
 Color CheckerTexture::value(double u, double v, const Point3& p) const {
-    double sines = std::sin(frequency * p.x()) * std::sin(frequency * p.y()) * std::sin(frequency * p.z());
-    return (sines < 0 ? odd : even)->value(u, v, p);
+    int ix = static_cast<int>(std::floor(frequency * p.x()));
+    int iy = static_cast<int>(std::floor(frequency * p.y()));
+    int iz = static_cast<int>(std::floor(frequency * p.z()));
+    bool is_even = ((ix + iy + iz) & 1) == 0;
+    return (is_even ? even : odd)->value(u, v, p);
 }

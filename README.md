@@ -38,6 +38,7 @@ raytracer/
 │   │   ├── aabb.h           # Axis-aligned bounding box
 │   │   ├── hittable.h       # Abstract Hittable + HitRecord
 │   │   ├── hittable_list.h/.cpp
+│   │   ├── plane.h/.cpp
 │   │   └── sphere.h/.cpp
 │   ├── materials/
 │   │   ├── material.h       # Abstract Material (get_specular, get_specular_pow, get_reflection)
@@ -86,7 +87,6 @@ All scene data lives in `scenes/default.json`. Edit it and re-run — no recompi
   "render": {
     "width": 800,
     "aspect_ratio": [16, 9],
-    "samples_per_pixel": 4,
     "max_depth": 10,
     "sky_color": [0.5, 0.5, 0.8],
     "ambient": [0.05, 0.05, 0.05]
@@ -106,9 +106,9 @@ All scene data lives in `scenes/default.json`. Edit it and re-run — no recompi
   "materials": {
     "ground": {
       "type": "opaque",
-      "texture": { "type": "checker", "color1": [0.2, 0.3, 0.1], "color2": [0.9, 0.9, 0.9], "frequency": 5 },
-      "specular": 0.4,
-      "specular_pow": 32.0
+      "texture": { "type": "checker", "color1": [0.0, 0.1, 0.2], "color2": [0.9, 0.9, 0.9], "frequency": 1 },
+      "specular": 0.9,
+      "specular_pow": 8.0
     },
     "red_shiny": {
       "type": "opaque",
@@ -120,15 +120,9 @@ All scene data lives in `scenes/default.json`. Edit it and re-run — no recompi
     }
   },
   "objects": [
-    { "type": "sphere", "center": [0, -1000, 0], "radius": 1000.0, "material": "ground" },
-    { "type": "sphere", "center": [4, 1, 0],     "radius": 1.0,    "material": "red_shiny" }
-  ],
-  "random_spheres": {
-    "enabled": true,
-    "grid_size": 11,
-    "radius": 0.2,
-    "reflective_chance": 0.3
-  }
+    { "type": "plane",  "point": [0, 0, 0], "normal": [0, 1, 0], "material": "ground"   },
+    { "type": "sphere", "center": [4, 1, 0], "radius": 1.0,       "material": "red_shiny" }
+  ]
 }
 ```
 
@@ -142,6 +136,13 @@ All scene data lives in `scenes/default.json`. Edit it and re-run — no recompi
 | `specular_pow` | `32.0` | Phong shininess exponent (higher = tighter highlight) |
 | `reflection` | `0.0` | Mirror reflection weight in [0, 1] |
 | `transparency` | `0.0` | Transmission weight in [0, 1]; combinable with `reflection` |
+
+### Object types
+
+| Type | Fields |
+|---|---|
+| `"sphere"` | `"center": [x, y, z]`, `"radius"`, `"material"` |
+| `"plane"` | `"point": [x, y, z]`, `"normal": [x, y, z]`, `"material"` |
 
 ### Texture types
 

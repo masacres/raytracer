@@ -1,6 +1,7 @@
 #include "scene/scene_loader.h"
 #include "core/utils.h"
 #include "geometry/sphere.h"
+#include "geometry/plane.h"
 #include "materials/opaque_material.h"
 #include "textures/checker.h"
 #include "textures/solid_color.h"
@@ -68,7 +69,7 @@ SceneConfig load_scene(const std::string& path) {
     auto aspect = render.at("aspect_ratio");
     double ar = aspect[0].get<double>() / aspect[1].get<double>();
     cfg.height = static_cast<int>(cfg.width / ar);
-    cfg.renderer.samples_per_pixel = render.value("samples_per_pixel", 4);
+    cfg.renderer.samples_per_pixel = 4;
     cfg.renderer.max_depth         = render.value("max_depth", 10);
     cfg.renderer.sky_color         = parse_color(render.at("sky_color"));
     cfg.renderer.ambient           = parse_color(render.at("ambient"));
@@ -105,6 +106,13 @@ SceneConfig load_scene(const std::string& path) {
             if (!materials.count(mat_name))
                 throw std::runtime_error("Unknown material: " + mat_name);
             cfg.world.add(std::make_shared<Sphere>(center, radius, materials[mat_name]));
+        } else if (type == "plane") {
+            auto pt  = parse_color(obj.at("point"));
+            auto n   = parse_color(obj.at("normal"));
+            std::string mat_name = obj.at("material").get<std::string>();
+            if (!materials.count(mat_name))
+                throw std::runtime_error("Unknown material: " + mat_name);
+            cfg.world.add(std::make_shared<Plane>(pt, n, materials[mat_name]));
         } else {
             throw std::runtime_error("Unknown object type: " + type);
         }
