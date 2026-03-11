@@ -2,6 +2,7 @@
 #include "core/utils.h"
 #include "geometry/sphere.h"
 #include "geometry/plane.h"
+#include "geometry/cylinder.h"
 #include "materials/opaque_material.h"
 #include "textures/checker.h"
 #include "textures/solid_color.h"
@@ -113,6 +114,15 @@ SceneConfig load_scene(const std::string& path) {
             if (!materials.count(mat_name))
                 throw std::runtime_error("Unknown material: " + mat_name);
             cfg.world.add(std::make_shared<Plane>(pt, n, materials[mat_name]));
+        } else if (type == "cylinder") {
+            Point3 cyl_center = parse_color(obj.at("center"));
+            Vec3   cyl_axis   = parse_color(obj.at("axis"));
+            double cyl_radius = obj.at("radius").get<double>();
+            double cyl_height = obj.at("height").get<double>();
+            std::string mat_name = obj.at("material").get<std::string>();
+            if (!materials.count(mat_name))
+                throw std::runtime_error("Unknown material: " + mat_name);
+            cfg.world.add(std::make_shared<Cylinder>(cyl_center, cyl_axis, cyl_radius, cyl_height, materials[mat_name]));
         } else {
             throw std::runtime_error("Unknown object type: " + type);
         }

@@ -14,6 +14,7 @@ A C++17 raytracer built from scratch, featuring a Phong direct-lighting model, p
 - **Anti-aliasing** — 4-sample fixed grid per pixel
 - **Gamma correction** — γ = 2.0
 - **Output** — PPM image format
+- **Primitives** — Spheres, planes, and finite capped cylinders (arbitrary axis orientation)
 - **JSON scenes** — Scene, camera, materials, and objects defined in a JSON file; no recompile needed to change the scene
 
 ## Project Structure
@@ -38,6 +39,7 @@ raytracer/
 │   │   ├── aabb.h           # Axis-aligned bounding box
 │   │   ├── hittable.h       # Abstract Hittable + HitRecord
 │   │   ├── hittable_list.h/.cpp
+│   │   ├── cylinder.h/.cpp
 │   │   ├── plane.h/.cpp
 │   │   └── sphere.h/.cpp
 │   ├── materials/
@@ -143,6 +145,7 @@ All scene data lives in `scenes/default.json`. Edit it and re-run — no recompi
 |---|---|
 | `"sphere"` | `"center": [x, y, z]`, `"radius"`, `"material"` |
 | `"plane"` | `"point": [x, y, z]`, `"normal": [x, y, z]`, `"material"` |
+| `"cylinder"` | `"center": [x, y, z]`, `"axis": [x, y, z]`, `"radius"`, `"height"`, `"material"` |
 
 ### Texture types
 
