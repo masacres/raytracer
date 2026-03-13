@@ -139,9 +139,10 @@ SceneConfig load_scene(const std::string& path) {
         } else if (type == "cylinder") {
             Point3 cyl_center = parse_color(obj.at("center"));
             Vec3   cyl_axis   = parse_color(obj.at("axis"));
-            double cyl_radius = obj.at("radius").get<double>();
+            double base_r     = obj.at("base_radius").get<double>();
+            double top_r      = obj.value("top_radius", base_r);
             double cyl_height = obj.at("height").get<double>();
-            return std::make_shared<Cylinder>(cyl_center, cyl_axis, cyl_radius, cyl_height, resolve_mat());
+            return std::make_shared<Cylinder>(cyl_center, cyl_axis, base_r, top_r, cyl_height, resolve_mat());
         } else if (type == "triangle") {
             Point3 tp0 = parse_color(obj.at("p0"));
             Point3 tp1 = parse_color(obj.at("p1"));
