@@ -5,7 +5,7 @@
 #include "geometry/cylinder.h"
 #include "geometry/triangle.h"
 #include "geometry/cuboid.h"
-#include "geometry/toroid.h"
+#include "geometry/torus.h"
 #include "materials/opaque_material.h"
 #include "textures/checker.h"
 #include "textures/uv_checker.h"
@@ -153,7 +153,7 @@ SceneConfig load_scene(const std::string& path) {
             if (!materials.count(mat_name))
                 throw std::runtime_error("Unknown material: " + mat_name);
             cfg.world.add(std::make_shared<Cuboid>(cub_center, cub_u, cub_v, cub_w, cub_h, cub_d, materials[mat_name]));
-        } else if (type == "toroid") {
+        } else if (type == "torus") {
             Point3 tor_center = parse_color(obj.at("center"));
             Vec3   tor_axis   = parse_color(obj.at("axis"));
             double tor_R      = obj.at("radius1").get<double>();
@@ -161,7 +161,7 @@ SceneConfig load_scene(const std::string& path) {
             std::string mat_name = obj.at("material").get<std::string>();
             if (!materials.count(mat_name))
                 throw std::runtime_error("Unknown material: " + mat_name);
-            cfg.world.add(std::make_shared<Toroid>(tor_center, tor_axis, tor_R, tor_r, materials[mat_name]));
+            cfg.world.add(std::make_shared<Torus>(tor_center, tor_axis, tor_R, tor_r, materials[mat_name]));
         } else {
             throw std::runtime_error("Unknown object type: " + type);
         }

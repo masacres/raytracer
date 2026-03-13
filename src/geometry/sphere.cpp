@@ -22,6 +22,11 @@ bool Sphere::hit(const Ray& r, double t_min, double t_max, HitRecord& rec) const
     rec.t = root;
     rec.p = r.at(rec.t);
     rec.set_face_normal(r, (rec.p - center) / radius);
+    Vec3 n = (rec.p - center) / radius;
+    double theta = std::acos(-n.y());
+    double phi   = std::atan2(-n.z(), n.x()) + M_PI;
+    rec.u = phi   / (2.0 * M_PI);
+    rec.v = theta / M_PI;
     rec.mat = mat;
     return true;
 }

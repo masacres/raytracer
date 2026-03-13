@@ -6,6 +6,8 @@ class Plane : public Hittable {
 public:
     Point3                    point;   // a point on the plane
     Vec3                      normal;  // unit normal
+    Vec3                      u_axis;  // tangent in the plane
+    Vec3                      v_axis;  // bitangent in the plane
     std::shared_ptr<Material> mat;
 
     Plane(Point3 point, Vec3 normal, std::shared_ptr<Material> mat);

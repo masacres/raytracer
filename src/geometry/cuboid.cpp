@@ -80,6 +80,14 @@ bool Cuboid::hit(const Ray& r, double t_min, double t_max, HitRecord& rec) const
     rec.p = r.at(t);
     rec.set_face_normal(r, outward);
     rec.mat = mat;
+
+    // UV: project hit point onto the two axes of the struck face, [0,1] per face.
+    const double halves[3] = { half_w, half_h, half_d };
+    Vec3 local = rec.p - center;
+    int  a0 = (hit_axis + 1) % 3;   // first tangent axis
+    int  a1 = (hit_axis + 2) % 3;   // second tangent axis
+    rec.u = (dot(local, axes[a0]) + halves[a0]) / (2.0 * halves[a0]);
+    rec.v = (dot(local, axes[a1]) + halves[a1]) / (2.0 * halves[a1]);
     return true;
 }
 
