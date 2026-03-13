@@ -110,39 +110,43 @@ SceneConfig load_scene(const std::string& path) {
         materials[name] = parse_material(def);
 
     // --- objects ---
-    auto parse_object = [&](auto& self, const json& obj) -> std::shared_ptr<Hittable> {
+    // inherited_mat: material propagated from a parent CSG node; nullptr at top level.
+    auto parse_object = [&](auto& self,
+                            const json& obj,
+                            std::shared_ptr<Material> inherited_mat) -> std::shared_ptr<Hittable> {
+        // Resolve material: explicit on this node wins, then inherited, then error.
+        auto resolve_mat = [&]() -> std::shared_ptr<Material> {
+            if (obj.contains("material")) {
+                std::string mat_name = obj.at("material").get<std::string>();
+                if (!materials.count(mat_name))
+                    throw std::runtime_error("Unknown material: " + mat_name);
+                return materials[mat_name];
+            }
+            if (inherited_mat) return inherited_mat;
+            throw std::runtime_error("No material specified for object of type: " +
+                                     obj.at("type").get<std::string>());
+        };
+
         std::string type = obj.at("type").get<std::string>();
         if (type == "sphere") {
             Point3 center = parse_color(obj.at("center"));
             double radius = obj.at("radius").get<double>();
-            std::string mat_name = obj.at("material").get<std::string>();
-            if (!materials.count(mat_name))
-                throw std::runtime_error("Unknown material: " + mat_name);
-            return std::make_shared<Sphere>(center, radius, materials[mat_name]);
+            return std::make_shared<Sphere>(center, radius, resolve_mat());
         } else if (type == "plane") {
-            auto pt  = parse_color(obj.at("point"));
-            auto n   = parse_color(obj.at("normal"));
-            std::string mat_name = obj.at("material").get<std::string>();
-            if (!materials.count(mat_name))
-                throw std::runtime_error("Unknown material: " + mat_name);
-            return std::make_shared<Plane>(pt, n, materials[mat_name]);
+            auto pt = parse_color(obj.at("point"));
+            auto n  = parse_color(obj.at("normal"));
+            return std::make_shared<Plane>(pt, n, resolve_mat());
         } else if (type == "cylinder") {
             Point3 cyl_center = parse_color(obj.at("center"));
             Vec3   cyl_axis   = parse_color(obj.at("axis"));
             double cyl_radius = obj.at("radius").get<double>();
             double cyl_height = obj.at("height").get<double>();
-            std::string mat_name = obj.at("material").get<std::string>();
-            if (!materials.count(mat_name))
-                throw std::runtime_error("Unknown material: " + mat_name);
-            return std::make_shared<Cylinder>(cyl_center, cyl_axis, cyl_radius, cyl_height, materials[mat_name]);
+            return std::make_shared<Cylinder>(cyl_center, cyl_axis, cyl_radius, cyl_height, resolve_mat());
         } else if (type == "triangle") {
             Point3 tp0 = parse_color(obj.at("p0"));
             Point3 tp1 = parse_color(obj.at("p1"));
             Point3 tp2 = parse_color(obj.at("p2"));
-            std::string mat_name = obj.at("material").get<std::string>();
-            if (!materials.count(mat_name))
-                throw std::runtime_error("Unknown material: " + mat_name);
-            return std::make_shared<Triangle>(tp0, tp1, tp2, materials[mat_name]);
+            return std::make_shared<Triangle>(tp0, tp1, tp2, resolve_mat());
         } else if (type == "cuboid") {
             Point3 cub_center = parse_color(obj.at("center"));
             Vec3   cub_u      = parse_color(obj.at("u"));
@@ -150,19 +154,13 @@ SceneConfig load_scene(const std::string& path) {
             double cub_w      = obj.at("width").get<double>();
             double cub_h      = obj.at("height").get<double>();
             double cub_d      = obj.at("depth").get<double>();
-            std::string mat_name = obj.at("material").get<std::string>();
-            if (!materials.count(mat_name))
-                throw std::runtime_error("Unknown material: " + mat_name);
-            return std::make_shared<Cuboid>(cub_center, cub_u, cub_v, cub_w, cub_h, cub_d, materials[mat_name]);
+            return std::make_shared<Cuboid>(cub_center, cub_u, cub_v, cub_w, cub_h, cub_d, resolve_mat());
         } else if (type == "torus") {
             Point3 tor_center = parse_color(obj.at("center"));
             Vec3   tor_axis   = parse_color(obj.at("axis"));
             double tor_R      = obj.at("radius1").get<double>();
             double tor_r      = obj.at("radius2").get<double>();
-            std::string mat_name = obj.at("material").get<std::string>();
-            if (!materials.count(mat_name))
-                throw std::runtime_error("Unknown material: " + mat_name);
-            return std::make_shared<Torus>(tor_center, tor_axis, tor_R, tor_r, materials[mat_name]);
+            return std::make_shared<Torus>(tor_center, tor_axis, tor_R, tor_r, resolve_mat());
         } else if (type == "csg") {
             std::string op_str = obj.at("operation").get<std::string>();
             CSGOperation op;
@@ -170,8 +168,10 @@ SceneConfig load_scene(const std::string& path) {
             else if (op_str == "intersection") op = CSGOperation::Intersection;
             else if (op_str == "difference")   op = CSGOperation::Difference;
             else throw std::runtime_error("Unknown CSG operation: " + op_str);
-            auto left  = self(self, obj.at("left"));
-            auto right = self(self, obj.at("right"));
+            // Material on this CSG node (if any) becomes the inherited material for children.
+            std::shared_ptr<Material> child_mat = obj.contains("material") ? resolve_mat() : inherited_mat;
+            auto left  = self(self, obj.at("left"),  child_mat);
+            auto right = self(self, obj.at("right"), child_mat);
             return std::make_shared<CSGNode>(op, left, right);
         } else {
             throw std::runtime_error("Unknown object type: " + type);
@@ -179,7 +179,7 @@ SceneConfig load_scene(const std::string& path) {
     };
 
     for (const auto& obj : j.at("objects"))
-        cfg.world.add(parse_object(parse_object, obj));
+        cfg.world.add(parse_object(parse_object, obj, nullptr));
 
     // --- random spheres (optional) ---
     if (j.contains("random_spheres")) {
