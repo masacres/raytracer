@@ -117,6 +117,10 @@ bool Torus::hit(const Ray& ray, double t_min, double t_max, HitRecord& rec) cons
         : Vec3(0, lp.y() > 0 ? 1 : -1, 0);
 
     rec.set_face_normal(ray, unit_vector(local_n.x()*x_axis + local_n.y()*axis + local_n.z()*z_axis));
+    double phi   = std::atan2(lp.z(), lp.x());
+    double theta = std::atan2(lp.y(), xz_len - R);
+    rec.u = (phi   + M_PI) / (2.0 * M_PI);
+    rec.v = (theta + M_PI) / (2.0 * M_PI);
     rec.mat = mat;
     return true;
 }

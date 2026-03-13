@@ -31,7 +31,7 @@ static std::shared_ptr<Texture> parse_texture(const json& j) {
         Color c1   = parse_color(j.at("color1"));
         Color c2   = parse_color(j.at("color2"));
         double freq = j.value("frequency", 10.0);
-        return std::make_shared<CheckerTexture>(c1, c2, freq);
+        return std::make_shared<XYZCheckerTexture>(c1, c2, freq);
     }
     if (type == "uv_checker") {
         Color c1      = parse_color(j.at("color1"));

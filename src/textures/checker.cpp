@@ -2,11 +2,11 @@
 #include "textures/solid_color.h"
 #include <cmath>
 
-CheckerTexture::CheckerTexture(Color c1, Color c2, double freq)
+XYZCheckerTexture::XYZCheckerTexture(Color c1, Color c2, double freq)
     : even(std::make_shared<SolidColor>(c1))
     , odd (std::make_shared<SolidColor>(c2)), frequency(freq) {}
 
-Color CheckerTexture::value(double u, double v, const Point3& p) const {
+Color XYZCheckerTexture::value(double u, double v, const Point3& p) const {
     int ix = static_cast<int>(std::floor(frequency * p.x()));
     int iy = static_cast<int>(std::floor(frequency * p.y()));
     int iz = static_cast<int>(std::floor(frequency * p.z()));

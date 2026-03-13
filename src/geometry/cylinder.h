@@ -6,6 +6,8 @@ class Cylinder : public Hittable {
 public:
     Point3                    center;   // midpoint of the axis
     Vec3                      axis;     // unit direction vector
+    Vec3                      x_axis;  // reference direction perpendicular to axis
+    Vec3                      z_axis;  // completes the local frame
     double                    radius;
     double                    height;   // total height; caps at ±height/2 along axis
     std::shared_ptr<Material> mat;
