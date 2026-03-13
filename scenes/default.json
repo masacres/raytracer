@@ -77,12 +77,15 @@
     { "type": "plane",  "point": [0, 0, 0],      "normal": [0, 1, 0], "material": "tri_checker" },
     { "type": "sphere", "center": [-4, 1, 2],    "radius": 1.0,       "material": "solid_green"     },
     { "type": "sphere", "center": [0, 1, 0],     "radius": 1.0,       "material": "metal"      },
-    { "type": "sphere", "center": [5, 1, 0],     "radius": 1.0,       "material": "metal" },
     { "type": "cuboid", "center": [3, 0.5, 3], "u": [1, 0, -0.15], "v": [0, 1, 0],
       "width": 1.0, "height": 1.0, "depth": 1.0, "material": "metal" },
     { "type": "torus", "center": [6, 0.6, 2], "axis": [1, 0, 0],
       "radius1": 0.5, "radius2": 0.1, "material": "solid_green" },
-    { "type": "cylinder", "center": [7, 0.5, 0], "axis": [0, 1, 0],
-      "radius": 0.4, "height": 1, "material": "solid_green" }
+    {
+      "type": "csg",
+      "operation": "difference",
+      "left":  { "type": "sphere", "center": [6, 1, 0], "radius": 1.0, "material": "solid_green" },
+      "right": { "type": "sphere", "center": [6, 1.5, 1], "radius": 0.8, "material": "solid_green" }
+    }
   ]
 }
