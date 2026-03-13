@@ -14,7 +14,7 @@ A C++17 raytracer built from scratch, featuring a Phong direct-lighting model, p
 - **Anti-aliasing** — 4-sample fixed grid per pixel
 - **Gamma correction** — γ = 2.0
 - **Output** — PPM image format
-- **Primitives** — Spheres, planes, finite capped cylinders (arbitrary axis orientation), triangles, arbitrarily-oriented cuboids, tori (tori of revolution, quartic ray intersection via Ferrari's method), and CSG nodes (union, intersection, difference)
+- **Primitives** — Spheres, planes, cones/frustums/cylinders (generalized cone primitive with per-end radii, arbitrary axis orientation), triangles, arbitrarily-oriented cuboids, tori (tori of revolution, quartic ray intersection via Ferrari's method), and CSG nodes (union, intersection, difference)
 - **JSON scenes** — Scene, camera, materials, and objects defined in a JSON file; no recompile needed to change the scene
 
 ## Project Structure
@@ -150,7 +150,7 @@ All scene data lives in `scenes/default.json`. Edit it and re-run — no recompi
 |---|---|
 | `"sphere"` | `"center": [x, y, z]`, `"radius"`, `"material"` |
 | `"plane"` | `"point": [x, y, z]`, `"normal": [x, y, z]`, `"material"` |
-| `"cylinder"` | `"center": [x, y, z]`, `"axis": [x, y, z]`, `"radius"`, `"height"`, `"material"` |
+| `"cylinder"` | `"center": [x, y, z]` (base), `"axis": [x, y, z]`, `"base_radius"`, `"top_radius"` (default: `base_radius`; `0` = cone tip), `"height"`, `"material"` |
 | `"triangle"` | `"p0": [x, y, z]`, `"p1": [x, y, z]`, `"p2": [x, y, z]`, `"material"` |
 | `"cuboid"` | `"center": [x, y, z]`, `"u": [x, y, z]`, `"v": [x, y, z]`, `"width"`, `"height"`, `"depth"`, `"material"` |
 | `"torus"` | `"center": [x, y, z]`, `"axis": [x, y, z]`, `"radius1"` (major R), `"radius2"` (tube r), `"material"` |
