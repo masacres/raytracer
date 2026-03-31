@@ -4,6 +4,8 @@ A C++17 raytracer built from scratch, featuring a Phong direct-lighting model, p
 
 ![Example render](render.png)
 
+![Soccer ball render](soccer.png)
+
 ## Features
 
 - **Materials** — `OpaqueMaterial` with albedo, specular coefficient, shininess exponent, mirror reflection, and transparency (combinable simultaneously)
