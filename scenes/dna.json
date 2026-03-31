@@ -1,0 +1,130 @@
+{
+  "render": {
+    "width": 800,
+    "aspect_ratio": [16, 9],
+    "max_depth": 10,
+    "sky_color": [0.04, 0.04, 0.10],
+    "ambient": [0.07, 0.07, 0.14]
+  },
+
+  "light": {
+    "direction": [-0.8, -1.0, -0.3],
+    "color": [1.0, 0.97, 0.92]
+  },
+
+  "camera": {
+    "lookfrom": [4, 8, 11],
+    "lookat":   [0, 6.5,  0],
+    "vup": [0.6, 0.5, 0],
+    "vfov": 50.0,
+    "aperture": 0.0,
+    "focus_dist": 10.0
+  },
+
+  "materials": {
+    "strand_a": {
+      "type": "opaque",
+      "albedo": [0.90, 0.38, 0.12],
+      "specular": 0.85,
+      "specular_pow": 64.0,
+      "reflection": 0.18
+    },
+    "strand_b": {
+      "type": "opaque",
+      "albedo": [0.12, 0.48, 0.92],
+      "specular": 0.85,
+      "specular_pow": 64.0,
+      "reflection": 0.18
+    },
+    "base_at": {
+      "type": "opaque",
+      "albedo": [0.92, 0.82, 0.08],
+      "specular": 0.5,
+      "specular_pow": 32.0,
+      "reflection": 0.06
+    },
+    "base_gc": {
+      "type": "opaque",
+      "albedo": [0.08, 0.82, 0.65],
+      "specular": 0.5,
+      "specular_pow": 32.0,
+      "reflection": 0.06
+    }
+  },
+
+  "objects": [
+    { "type": "sphere", "center": [ 2.000,  0.0,  0.000], "radius": 0.28, "material": "strand_a" },
+    { "type": "sphere", "center": [ 1.618,  1.0,  1.176], "radius": 0.28, "material": "strand_a" },
+    { "type": "sphere", "center": [ 0.618,  2.0,  1.902], "radius": 0.28, "material": "strand_a" },
+    { "type": "sphere", "center": [-0.618,  3.0,  1.902], "radius": 0.28, "material": "strand_a" },
+    { "type": "sphere", "center": [-1.618,  4.0,  1.176], "radius": 0.28, "material": "strand_a" },
+    { "type": "sphere", "center": [-2.000,  5.0,  0.000], "radius": 0.28, "material": "strand_a" },
+    { "type": "sphere", "center": [-1.618,  6.0, -1.176], "radius": 0.28, "material": "strand_a" },
+    { "type": "sphere", "center": [-0.618,  7.0, -1.902], "radius": 0.28, "material": "strand_a" },
+    { "type": "sphere", "center": [ 0.618,  8.0, -1.902], "radius": 0.28, "material": "strand_a" },
+    { "type": "sphere", "center": [ 1.618,  9.0, -1.176], "radius": 0.28, "material": "strand_a" },
+    { "type": "sphere", "center": [ 2.000, 10.0,  0.000], "radius": 0.28, "material": "strand_a" },
+    { "type": "sphere", "center": [ 1.618, 11.0,  1.176], "radius": 0.28, "material": "strand_a" },
+    { "type": "sphere", "center": [ 0.618, 12.0,  1.902], "radius": 0.28, "material": "strand_a" },
+    { "type": "sphere", "center": [-0.618, 13.0,  1.902], "radius": 0.28, "material": "strand_a" },
+
+    { "type": "sphere", "center": [-2.000,  0.0,  0.000], "radius": 0.28, "material": "strand_b" },
+    { "type": "sphere", "center": [-1.618,  1.0, -1.176], "radius": 0.28, "material": "strand_b" },
+    { "type": "sphere", "center": [-0.618,  2.0, -1.902], "radius": 0.28, "material": "strand_b" },
+    { "type": "sphere", "center": [ 0.618,  3.0, -1.902], "radius": 0.28, "material": "strand_b" },
+    { "type": "sphere", "center": [ 1.618,  4.0, -1.176], "radius": 0.28, "material": "strand_b" },
+    { "type": "sphere", "center": [ 2.000,  5.0,  0.000], "radius": 0.28, "material": "strand_b" },
+    { "type": "sphere", "center": [ 1.618,  6.0,  1.176], "radius": 0.28, "material": "strand_b" },
+    { "type": "sphere", "center": [ 0.618,  7.0,  1.902], "radius": 0.28, "material": "strand_b" },
+    { "type": "sphere", "center": [-0.618,  8.0,  1.902], "radius": 0.28, "material": "strand_b" },
+    { "type": "sphere", "center": [-1.618,  9.0,  1.176], "radius": 0.28, "material": "strand_b" },
+    { "type": "sphere", "center": [-2.000, 10.0,  0.000], "radius": 0.28, "material": "strand_b" },
+    { "type": "sphere", "center": [-1.618, 11.0, -1.176], "radius": 0.28, "material": "strand_b" },
+    { "type": "sphere", "center": [-0.618, 12.0, -1.902], "radius": 0.28, "material": "strand_b" },
+    { "type": "sphere", "center": [ 0.618, 13.0, -1.902], "radius": 0.28, "material": "strand_b" },
+
+    { "type": "cylinder", "center": [ 2.000,  0.0,  0.000], "axis": [-0.382, 1.0,  1.176], "base_radius": 0.13, "top_radius": 0.13, "height": 1.59, "material": "strand_a" },
+    { "type": "cylinder", "center": [ 1.618,  1.0,  1.176], "axis": [-1.000, 1.0,  0.726], "base_radius": 0.13, "top_radius": 0.13, "height": 1.59, "material": "strand_a" },
+    { "type": "cylinder", "center": [ 0.618,  2.0,  1.902], "axis": [-1.236, 1.0,  0.000], "base_radius": 0.13, "top_radius": 0.13, "height": 1.59, "material": "strand_a" },
+    { "type": "cylinder", "center": [-0.618,  3.0,  1.902], "axis": [-1.000, 1.0, -0.726], "base_radius": 0.13, "top_radius": 0.13, "height": 1.59, "material": "strand_a" },
+    { "type": "cylinder", "center": [-1.618,  4.0,  1.176], "axis": [-0.382, 1.0, -1.176], "base_radius": 0.13, "top_radius": 0.13, "height": 1.59, "material": "strand_a" },
+    { "type": "cylinder", "center": [-2.000,  5.0,  0.000], "axis": [ 0.382, 1.0, -1.176], "base_radius": 0.13, "top_radius": 0.13, "height": 1.59, "material": "strand_a" },
+    { "type": "cylinder", "center": [-1.618,  6.0, -1.176], "axis": [ 1.000, 1.0, -0.726], "base_radius": 0.13, "top_radius": 0.13, "height": 1.59, "material": "strand_a" },
+    { "type": "cylinder", "center": [-0.618,  7.0, -1.902], "axis": [ 1.236, 1.0,  0.000], "base_radius": 0.13, "top_radius": 0.13, "height": 1.59, "material": "strand_a" },
+    { "type": "cylinder", "center": [ 0.618,  8.0, -1.902], "axis": [ 1.000, 1.0,  0.726], "base_radius": 0.13, "top_radius": 0.13, "height": 1.59, "material": "strand_a" },
+    { "type": "cylinder", "center": [ 1.618,  9.0, -1.176], "axis": [ 0.382, 1.0,  1.176], "base_radius": 0.13, "top_radius": 0.13, "height": 1.59, "material": "strand_a" },
+    { "type": "cylinder", "center": [ 2.000, 10.0,  0.000], "axis": [-0.382, 1.0,  1.176], "base_radius": 0.13, "top_radius": 0.13, "height": 1.59, "material": "strand_a" },
+    { "type": "cylinder", "center": [ 1.618, 11.0,  1.176], "axis": [-1.000, 1.0,  0.726], "base_radius": 0.13, "top_radius": 0.13, "height": 1.59, "material": "strand_a" },
+    { "type": "cylinder", "center": [ 0.618, 12.0,  1.902], "axis": [-1.236, 1.0,  0.000], "base_radius": 0.13, "top_radius": 0.13, "height": 1.59, "material": "strand_a" },
+
+    { "type": "cylinder", "center": [-2.000,  0.0,  0.000], "axis": [ 0.382, 1.0, -1.176], "base_radius": 0.13, "top_radius": 0.13, "height": 1.59, "material": "strand_b" },
+    { "type": "cylinder", "center": [-1.618,  1.0, -1.176], "axis": [ 1.000, 1.0, -0.726], "base_radius": 0.13, "top_radius": 0.13, "height": 1.59, "material": "strand_b" },
+    { "type": "cylinder", "center": [-0.618,  2.0, -1.902], "axis": [ 1.236, 1.0,  0.000], "base_radius": 0.13, "top_radius": 0.13, "height": 1.59, "material": "strand_b" },
+    { "type": "cylinder", "center": [ 0.618,  3.0, -1.902], "axis": [ 1.000, 1.0,  0.726], "base_radius": 0.13, "top_radius": 0.13, "height": 1.59, "material": "strand_b" },
+    { "type": "cylinder", "center": [ 1.618,  4.0, -1.176], "axis": [ 0.382, 1.0,  1.176], "base_radius": 0.13, "top_radius": 0.13, "height": 1.59, "material": "strand_b" },
+    { "type": "cylinder", "center": [ 2.000,  5.0,  0.000], "axis": [-0.382, 1.0,  1.176], "base_radius": 0.13, "top_radius": 0.13, "height": 1.59, "material": "strand_b" },
+    { "type": "cylinder", "center": [ 1.618,  6.0,  1.176], "axis": [-1.000, 1.0,  0.726], "base_radius": 0.13, "top_radius": 0.13, "height": 1.59, "material": "strand_b" },
+    { "type": "cylinder", "center": [ 0.618,  7.0,  1.902], "axis": [-1.236, 1.0,  0.000], "base_radius": 0.13, "top_radius": 0.13, "height": 1.59, "material": "strand_b" },
+    { "type": "cylinder", "center": [-0.618,  8.0,  1.902], "axis": [-1.000, 1.0, -0.726], "base_radius": 0.13, "top_radius": 0.13, "height": 1.59, "material": "strand_b" },
+    { "type": "cylinder", "center": [-1.618,  9.0,  1.176], "axis": [-0.382, 1.0, -1.176], "base_radius": 0.13, "top_radius": 0.13, "height": 1.59, "material": "strand_b" },
+    { "type": "cylinder", "center": [-2.000, 10.0,  0.000], "axis": [ 0.382, 1.0, -1.176], "base_radius": 0.13, "top_radius": 0.13, "height": 1.59, "material": "strand_b" },
+    { "type": "cylinder", "center": [-1.618, 11.0, -1.176], "axis": [ 1.000, 1.0, -0.726], "base_radius": 0.13, "top_radius": 0.13, "height": 1.59, "material": "strand_b" },
+    { "type": "cylinder", "center": [-0.618, 12.0, -1.902], "axis": [ 1.236, 1.0,  0.000], "base_radius": 0.13, "top_radius": 0.13, "height": 1.59, "material": "strand_b" },
+
+    { "type": "cylinder", "center": [ 2.000,  0.0,  0.000], "axis": [-1.000, 0,  0.000], "base_radius": 0.11, "top_radius": 0.11, "height": 4.0, "material": "base_at" },
+    { "type": "cylinder", "center": [ 0.618,  2.0,  1.902], "axis": [-0.309, 0, -0.951], "base_radius": 0.11, "top_radius": 0.11, "height": 4.0, "material": "base_at" },
+    { "type": "cylinder", "center": [-1.618,  4.0,  1.176], "axis": [ 0.809, 0, -0.588], "base_radius": 0.11, "top_radius": 0.11, "height": 4.0, "material": "base_at" },
+    { "type": "cylinder", "center": [-1.618,  6.0, -1.176], "axis": [ 0.809, 0,  0.588], "base_radius": 0.11, "top_radius": 0.11, "height": 4.0, "material": "base_at" },
+    { "type": "cylinder", "center": [ 0.618,  8.0, -1.902], "axis": [-0.309, 0,  0.951], "base_radius": 0.11, "top_radius": 0.11, "height": 4.0, "material": "base_at" },
+    { "type": "cylinder", "center": [ 2.000, 10.0,  0.000], "axis": [-1.000, 0,  0.000], "base_radius": 0.11, "top_radius": 0.11, "height": 4.0, "material": "base_at" },
+    { "type": "cylinder", "center": [ 0.618, 12.0,  1.902], "axis": [-0.309, 0, -0.951], "base_radius": 0.11, "top_radius": 0.11, "height": 4.0, "material": "base_at" },
+
+    { "type": "cylinder", "center": [ 1.618,  1.0,  1.176], "axis": [-0.809, 0, -0.588], "base_radius": 0.11, "top_radius": 0.11, "height": 4.0, "material": "base_gc" },
+    { "type": "cylinder", "center": [-0.618,  3.0,  1.902], "axis": [ 0.309, 0, -0.951], "base_radius": 0.11, "top_radius": 0.11, "height": 4.0, "material": "base_gc" },
+    { "type": "cylinder", "center": [-2.000,  5.0,  0.000], "axis": [ 1.000, 0,  0.000], "base_radius": 0.11, "top_radius": 0.11, "height": 4.0, "material": "base_gc" },
+    { "type": "cylinder", "center": [-0.618,  7.0, -1.902], "axis": [ 0.309, 0,  0.951], "base_radius": 0.11, "top_radius": 0.11, "height": 4.0, "material": "base_gc" },
+    { "type": "cylinder", "center": [ 1.618,  9.0, -1.176], "axis": [-0.809, 0,  0.588], "base_radius": 0.11, "top_radius": 0.11, "height": 4.0, "material": "base_gc" },
+    { "type": "cylinder", "center": [ 1.618, 11.0,  1.176], "axis": [-0.809, 0, -0.588], "base_radius": 0.11, "top_radius": 0.11, "height": 4.0, "material": "base_gc" },
+    { "type": "cylinder", "center": [-0.618, 13.0,  1.902], "axis": [ 0.309, 0, -0.951], "base_radius": 0.11, "top_radius": 0.11, "height": 4.0, "material": "base_gc" }
+  ]
+}
